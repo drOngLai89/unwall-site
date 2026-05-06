@@ -1,168 +1,759 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Unwall</title>
-  <meta name="description" content="Unwall support and privacy information." />
-  <style>
-    :root{
-      --bg:#0F0E0C;
-      --card:#171612;
-      --text:#F5F1E8;
-      --muted:#CFC6B6;
-      --line:#2A281F;
-      --accent:#D7B37A;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      background:var(--bg);
-      color:var(--text);
-      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-      line-height:1.65;
-    }
-    .wrap{
-      max-width:900px;
-      margin:0 auto;
-      padding:32px 20px 80px;
-    }
-    .nav{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-      margin-bottom:22px;
-    }
-    .nav a{
-      color:var(--muted);
-      text-decoration:none;
-      border:1px solid var(--line);
-      padding:10px 14px;
-      border-radius:999px;
-    }
-    .hero,.card{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:24px;
-      padding:24px;
-    }
-    .hero{margin-bottom:18px}
-    .card{margin-top:18px}
-    h1{font-size:40px;margin:0 0 8px}
-    h2{font-size:28px;margin:0 0 10px}
-    h3{font-size:18px;margin:20px 0 8px}
-    p,li{color:var(--muted)}
-    a{color:var(--accent)}
-    .small{font-size:14px;color:#A79E8F}
-    .footer{
-      margin-top:32px;
-      padding-top:20px;
-      border-top:1px solid var(--line);
-      color:#9C9385;
-      font-size:14px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unwall — Neuroplasticity Mind Coach</title>
+<meta name="description" content="Unwall is a guided self-reflection app inspired by neuroplasticity. Build intentional routines through structured practice, AI-personalised coaching, breathing, visualisation, and gratitude.">
+<meta property="og:title" content="Unwall — Neuroplasticity Mind Coach">
+<meta property="og:description" content="Build better daily habits with guided sessions, AI-personalised reflection, and progress tracking.">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #14110d;
+    --bg-2: #1c1813;
+    --ink: #e8dfd1;
+    --ink-soft: #b8ad99;
+    --ink-mute: #8a7f6b;
+    --bronze: #b08658;
+    --bronze-soft: #c69d6e;
+    --bronze-deep: #6b4f33;
+    --line: rgba(176, 134, 88, 0.18);
+    --serif: 'Cormorant Garamond', 'Times New Roman', serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .container {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* Nav */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    padding: 22px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    background: rgba(20, 17, 13, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .logo {
+    font-family: var(--serif);
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+  }
+  .logo span { color: var(--bronze); }
+  nav .cta {
+    font-family: var(--sans);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--bronze);
+    text-decoration: none;
+    border: 1px solid var(--bronze-deep);
+    padding: 10px 18px;
+    transition: all 0.3s ease;
+  }
+  nav .cta:hover {
+    background: var(--bronze);
+    color: var(--bg);
+    border-color: var(--bronze);
+  }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    padding: 140px 32px 80px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: 20%; right: -10%;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(176, 134, 88, 0.12), transparent 70%);
+    pointer-events: none;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+  .eyebrow {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--bronze);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 1s 0.1s forwards;
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(48px, 6vw, 88px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 1s 0.25s forwards;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--bronze);
+    font-weight: 300;
+  }
+  .hero p.lead {
+    font-size: 18px;
+    color: var(--ink-soft);
+    max-width: 480px;
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fadeUp 1s 0.4s forwards;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 1s 0.55s forwards;
+  }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bronze);
+    color: var(--bg);
+    text-decoration: none;
+    padding: 16px 28px;
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+  }
+  .btn-primary:hover {
+    background: var(--bronze-soft);
+    transform: translateY(-2px);
+  }
+  .btn-secondary {
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--bronze-deep);
+    padding-bottom: 4px;
+    transition: all 0.3s ease;
+  }
+  .btn-secondary:hover {
+    color: var(--bronze);
+    border-color: var(--bronze);
+  }
+  .hero-meta {
+    margin-top: 56px;
+    padding-top: 28px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    gap: 48px;
+    opacity: 0;
+    animation: fadeUp 1s 0.7s forwards;
+  }
+  .hero-meta div {
+    flex: 0 0 auto;
+  }
+  .hero-meta .num {
+    font-family: var(--serif);
+    font-size: 32px;
+    color: var(--bronze);
+    display: block;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .hero-meta .lbl {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+
+  /* Phone mockup */
+  .phone-stage {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    animation: fadeUp 1.2s 0.5s forwards;
+  }
+  .phone {
+    width: 300px;
+    height: 620px;
+    background: linear-gradient(145deg, #2a241c, #1a1612);
+    border-radius: 42px;
+    padding: 12px;
+    box-shadow:
+      0 60px 120px rgba(0, 0, 0, 0.6),
+      0 0 0 1px rgba(176, 134, 88, 0.15),
+      inset 0 0 0 2px rgba(255, 255, 255, 0.03);
+    position: relative;
+  }
+  .phone::before {
+    content: '';
+    position: absolute;
+    top: 22px; left: 50%;
+    transform: translateX(-50%);
+    width: 90px; height: 24px;
+    background: #0a0805;
+    border-radius: 14px;
+    z-index: 5;
+  }
+  .phone-screen {
+    width: 100%; height: 100%;
+    background: linear-gradient(180deg, #1a1611 0%, #14110d 100%);
+    border-radius: 32px;
+    overflow: hidden;
+    position: relative;
+    padding: 56px 22px 22px;
+    display: flex;
+    flex-direction: column;
+  }
+  .phone-eyebrow {
+    font-family: var(--sans);
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--bronze);
+    margin-bottom: 14px;
+  }
+  .phone-h {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.15;
+    margin-bottom: 18px;
+  }
+  .phone-h em { font-style: italic; color: var(--bronze); }
+  .phone-card {
+    background: rgba(176, 134, 88, 0.06);
+    border: 1px solid rgba(176, 134, 88, 0.18);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .phone-card .card-lbl {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 6px;
+  }
+  .phone-card .card-txt {
+    font-family: var(--serif);
+    font-size: 16px;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  .phone-tabs {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-around;
+    padding-top: 14px;
+    border-top: 1px solid rgba(176, 134, 88, 0.12);
+  }
+  .phone-tab {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .phone-tab.active { color: var(--bronze); }
+
+  /* Sections */
+  section {
+    padding: 120px 32px;
+    position: relative;
+  }
+  .section-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--bronze);
+    margin-bottom: 20px;
+  }
+  .section-h {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(36px, 4.5vw, 60px);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin-bottom: 24px;
+    max-width: 720px;
+  }
+  .section-h em { font-style: italic; color: var(--bronze); font-weight: 300; }
+  .section-sub {
+    font-size: 17px;
+    color: var(--ink-soft);
+    max-width: 560px;
+    margin-bottom: 64px;
+  }
+
+  /* Pillars */
+  .pillars {
+    background: var(--bg-2);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .pillar-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .pillar {
+    background: var(--bg-2);
+    padding: 48px 36px;
+    transition: background 0.4s ease;
+  }
+  .pillar:hover { background: var(--bg); }
+  .pillar-num {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--bronze);
+    margin-bottom: 24px;
+  }
+  .pillar-icon {
+    width: 36px; height: 36px;
+    margin-bottom: 24px;
+    color: var(--bronze);
+  }
+  .pillar h3 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 26px;
+    color: var(--ink);
+    margin-bottom: 14px;
+    letter-spacing: -0.01em;
+  }
+  .pillar p {
+    color: var(--ink-soft);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  /* How it works */
+  .flow-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    margin-top: 24px;
+  }
+  .flow-step {
+    border-top: 1px solid var(--bronze-deep);
+    padding-top: 24px;
+    position: relative;
+  }
+  .flow-step::before {
+    content: '';
+    position: absolute;
+    top: -4px; left: 0;
+    width: 8px; height: 8px;
+    background: var(--bronze);
+    border-radius: 50%;
+  }
+  .flow-num {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 13px;
+    color: var(--bronze);
+    margin-bottom: 14px;
+    display: block;
+  }
+  .flow-step h4 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 22px;
+    color: var(--ink);
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+  .flow-step p {
+    color: var(--ink-soft);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* Quote */
+  .quote-section {
+    text-align: center;
+    padding: 140px 32px;
+    background: var(--bg-2);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .quote {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(28px, 3.5vw, 44px);
+    line-height: 1.3;
+    color: var(--ink);
+    max-width: 880px;
+    margin: 0 auto 32px;
+    letter-spacing: -0.01em;
+  }
+  .quote span { color: var(--bronze); }
+  .quote-attribution {
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+
+  /* Final CTA */
+  .final {
+    text-align: center;
+    padding: 140px 32px 100px;
+  }
+  .final h2 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(40px, 5vw, 72px);
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 28px;
+    letter-spacing: -0.02em;
+  }
+  .final h2 em { font-style: italic; color: var(--bronze); font-weight: 300; }
+  .final p {
+    color: var(--ink-soft);
+    font-size: 18px;
+    max-width: 520px;
+    margin: 0 auto 40px;
+  }
+  .price-tag {
+    display: inline-block;
+    margin-top: 24px;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 17px;
+    color: var(--ink-mute);
+  }
+  .price-tag strong {
+    color: var(--bronze);
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 48px 32px 36px;
+    color: var(--ink-mute);
+    font-size: 13px;
+  }
+  .footer-grid {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  footer a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    margin: 0 14px;
+    transition: color 0.3s;
+  }
+  footer a:hover { color: var(--bronze); }
+  footer .disclaimer {
+    max-width: 1180px;
+    margin: 24px auto 0;
+    font-size: 11px;
+    color: var(--ink-mute);
+    line-height: 1.6;
+    border-top: 1px solid var(--line);
+    padding-top: 20px;
+    font-style: italic;
+  }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 60px; }
+    .phone-stage { order: 2; }
+    .pillar-grid { grid-template-columns: 1fr; }
+    .flow-grid { grid-template-columns: 1fr 1fr; }
+    .hero-meta { gap: 28px; }
+    section { padding: 80px 32px; }
+  }
+  @media (max-width: 560px) {
+    .container, nav, .hero, section { padding-left: 22px; padding-right: 22px; }
+    .flow-grid { grid-template-columns: 1fr; }
+    .hero { padding-top: 120px; }
+    .phone { width: 260px; height: 540px; }
+    .hero-meta { flex-wrap: wrap; }
+  }
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <nav class="nav">
-      <a href="/">Home</a>
-      <a href="#support">Support</a>
-      <a href="#privacy">Privacy Policy</a>
-    </nav>
 
-    <section class="hero">
-      <h1>Unwall</h1>
-      <p>
-        Unwall is a guided self-reflection and wellbeing app designed to help users pause,
-        reflect, and work through difficult thought loops with more clarity.
-      </p>
-      <p class="small">
-        This page provides support details and the privacy policy for the app.
-      </p>
-    </section>
+<nav>
+  <div class="logo">Un<span>wall</span></div>
+  <a href="https://apps.apple.com/us/app/unwall/id6762341549" class="cta" target="_blank" rel="noopener">Download</a>
+</nav>
 
-    <section id="support" class="card">
-      <h2>Support</h2>
-      <p>
-        For help, bug reports, account questions, or general feedback about Unwall, contact:
-      </p>
-      <p>
-        Email:
-        <a href="mailto:cheehongxu@gmail.com">cheehongxu@gmail.com</a>
-      </p>
-      <p>
-        Please include your device model, operating system version, app version, and a short
-        description of the issue so we can respond more quickly.
-      </p>
-    </section>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="eyebrow">Neuroplasticity Mind Coach</div>
+      <h1>Rewire the way<br>you <em>show up</em><br>each day.</h1>
+      <p class="lead">Unwall is a guided self-reflection app inspired by neuroplasticity. Build intentional routines through structured, AI-personalised practice.</p>
+      <div class="hero-actions">
+        <a href="https://apps.apple.com/us/app/unwall/id6762341549" class="btn-primary" target="_blank" rel="noopener">
+          Download on App Store
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#how" class="btn-secondary">How it works</a>
+      </div>
+      <div class="hero-meta">
+        <div>
+          <span class="num">5</span>
+          <span class="lbl">Guided practices</span>
+        </div>
+        <div>
+          <span class="num">AI</span>
+          <span class="lbl">Personalised coach</span>
+        </div>
+        <div>
+          <span class="num">9+</span>
+          <span class="lbl">Health &amp; Fitness</span>
+        </div>
+      </div>
+    </div>
 
-    <section id="privacy" class="card">
-      <h2>Privacy Policy</h2>
-      <p><strong>Effective date:</strong> 16 April 2026</p>
+    <!-- Phone mockup reflecting Coach screen -->
+    <div class="phone-stage">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="phone-eyebrow">Coach</div>
+          <div class="phone-h">What would you like to <em>work on</em> today?</div>
 
-      <p>
-        This Privacy Policy explains how Unwall handles information when you use the app.
-      </p>
+          <div class="phone-card">
+            <div class="card-lbl">Focus</div>
+            <div class="card-txt">Letting go of self-criticism</div>
+          </div>
+          <div class="phone-card">
+            <div class="card-lbl">Session ready</div>
+            <div class="card-txt">Breathing &middot; Visualisation &middot; Gratitude</div>
+          </div>
+          <div class="phone-card" style="background: var(--bronze); border-color: var(--bronze);">
+            <div class="card-lbl" style="color: rgba(20,17,13,0.6);">Begin</div>
+            <div class="card-txt" style="color: var(--bg); font-style: italic;">Start your session</div>
+          </div>
 
-      <h3>Information you provide</h3>
-      <p>
-        Unwall may process information you choose to enter in the app, such as reflections,
-        prompts, or text submitted while using the app’s features.
-      </p>
-
-      <h3>How information is used</h3>
-      <p>
-        Information may be used to provide app features, improve the service, maintain security,
-        troubleshoot technical issues, and respond to support requests.
-      </p>
-
-      <h3>Third-party services</h3>
-      <p>
-        Unwall may rely on third-party providers for hosting, infrastructure, content processing,
-        analytics, crash reporting, or other technical services needed to operate the app.
-      </p>
-
-      <h3>Data sharing</h3>
-      <p>
-        We do not sell your personal information. Information may be disclosed where required by
-        law, to protect users, or to operate and secure the service.
-      </p>
-
-      <h3>Data retention</h3>
-      <p>
-        Data is retained only for as long as reasonably necessary for the purposes described in
-        this policy, unless a longer retention period is required by law.
-      </p>
-
-      <h3>Your choices</h3>
-      <p>
-        You may contact us to ask questions about your data, request deletion where applicable,
-        or ask about how information is handled.
-      </p>
-
-      <h3>Children’s privacy</h3>
-      <p>
-        Unwall is not intended to knowingly collect personal information from children in violation
-        of applicable law.
-      </p>
-
-      <h3>Changes to this policy</h3>
-      <p>
-        This Privacy Policy may be updated from time to time. Continued use of the app after changes
-        take effect means the updated policy will apply.
-      </p>
-
-      <h3>Contact</h3>
-      <p>
-        For privacy questions or requests, contact
-        <a href="mailto:cheehongxu@gmail.com">cheehongxu@gmail.com</a>.
-      </p>
-    </section>
-
-    <div class="footer">
-      © 2026 Unwall. All rights reserved.
+          <div class="phone-tabs">
+            <div class="phone-tab">Home</div>
+            <div class="phone-tab active">Coach</div>
+            <div class="phone-tab">Journey</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+</section>
+
+<!-- PILLARS -->
+<section class="pillars">
+  <div class="container">
+    <div class="section-eyebrow">The practice</div>
+    <h2 class="section-h">Five guided exercises, one <em>structured flow</em>.</h2>
+    <p class="section-sub">Sessions can include any combination of the following, shaped by your focus.</p>
+  </div>
+
+  <div class="container" style="padding-top: 8px;">
+    <div class="pillar-grid">
+      <div class="pillar">
+        <div class="pillar-num">i.</div>
+        <svg class="pillar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M12 3v18M3 12h18"/>
+        </svg>
+        <h3>Breathing</h3>
+        <p>Paced breathwork to settle the nervous system before the deeper practice begins.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">ii.</div>
+        <svg class="pillar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+          <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+        <h3>Visualisation</h3>
+        <p>Guided imagery built around the version of yourself you are working toward.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">iii.</div>
+        <svg class="pillar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+          <path d="M12 2v20M5 9l7-7 7 7"/>
+        </svg>
+        <h3>Affirmations</h3>
+        <p>Repeated, intentional statements that reinforce the patterns you choose to grow.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">iv.</div>
+        <svg class="pillar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+        <h3>Gratitude</h3>
+        <p>A short structured pause to record what is working, anchoring positive recall.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">v.</div>
+        <svg class="pillar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+          <path d="M3 3v18h18"/>
+          <path d="M7 14l4-4 4 4 5-5"/>
+        </svg>
+        <h3>Progress tracking</h3>
+        <p>See sessions accumulate over time. Consistency becomes visible, not assumed.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">vi.</div>
+        <svg class="pillar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M12 7v5l3 3"/>
+        </svg>
+        <h3>Repeatable routine</h3>
+        <p>Practice that fits a daily rhythm. Calm, structured, designed to be returned to.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="container">
+    <div class="section-eyebrow">How it works</div>
+    <h2 class="section-h">Four steps, repeated <em>with intention</em>.</h2>
+    <p class="section-sub">No leaderboards. No streaks designed to manipulate you. Just a quiet, repeatable practice that compounds.</p>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <span class="flow-num">Step 01</span>
+        <h4>Open Coach</h4>
+        <p>Share what you would like to work on, in your own words.</p>
+      </div>
+      <div class="flow-step">
+        <span class="flow-num">Step 02</span>
+        <h4>Receive a session</h4>
+        <p>Unwall builds a personalised sequence of exercises around your focus.</p>
+      </div>
+      <div class="flow-step">
+        <span class="flow-num">Step 03</span>
+        <h4>Practice</h4>
+        <p>Move through breathing, visualisation, affirmations and gratitude in one calm flow.</p>
+      </div>
+      <div class="flow-step">
+        <span class="flow-num">Step 04</span>
+        <h4>Track Journey</h4>
+        <p>Reflect on how the practice is shaping the way you show up day to day.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section class="quote-section">
+  <div class="container">
+    <p class="quote">More than passive inspiration. A practice for <span>reflection, consistency, and habit-building</span> in one structured flow.</p>
+    <div class="quote-attribution">Unwall on the App Store</div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final">
+  <div class="container">
+    <h2>Begin a quieter,<br>more <em>intentional</em> day.</h2>
+    <p>Available now on iPhone, iPad and Apple Vision. Android in Google Play review.</p>
+    <a href="https://apps.apple.com/us/app/unwall/id6762341549" class="btn-primary" target="_blank" rel="noopener">
+      Download on App Store
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
+    <div class="price-tag">One-time purchase &middot; <strong>USD 29.99</strong></div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div>&copy; 2026 Unwall. All rights reserved.</div>
+    <div>
+      <a href="https://dronglai89.github.io/unwall-site/#privacy" target="_blank" rel="noopener">Privacy</a>
+      <a href="https://apps.apple.com/us/app/unwall/id6762341549" target="_blank" rel="noopener">App Store</a>
+    </div>
+  </div>
+  <div class="disclaimer">
+    Unwall is a self-reflection and personal development app. It is not a medical, mental health, or crisis service. If you are in distress, please contact a qualified professional or local emergency services.
+  </div>
+</footer>
+
 </body>
 </html>
